@@ -1,5 +1,5 @@
-# coded by Security Flaws (IT-G)
-# 2023
+//Coded by Security Flaws (IT-G)
+//2023
 
 <?php
 require_once('Class.php');
@@ -32,6 +32,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_user'])) {
         echo "User deleted successfully!";
     } else {
         echo "Failed to delete user.";
+    }
+}
+
+// Handle update user form submission
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_user'])) {
+    $id = $_POST['user_id'];
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+
+    // Update user
+    $result = $user->updateUser($id, $name, $email);
+
+    if ($result) {
+        echo "User updated successfully!";
+    } else {
+        echo "Failed to update user.";
     }
 }
 
@@ -71,33 +87,46 @@ $users = $user->getAllUsers();
                                         <input type="hidden" name="delete_user" value="<?php echo $userData['id']; ?>">
                                         <input type="submit" value="Delete" class="btn btn-danger">
                                     </form>
+                                    <form method="post" action="Index.php">
+                                        <input type="hidden" name="user_id" value="<?php echo $userData['id']; ?>">
+                                        <div class="form-row">
+                                            <div class="col">
+                                                <input type="text" name="name" value="<?php echo $userData['name']; ?>" class="form-control">
+                                            </div>
+                                            <div class="col">
+                                                <input type="email" name="email" value="<?php echo $userData['email']; ?>" class="form-control">
+                                            </div>
+                                            <div class="col">
+                                                <input type="submit" name="update_user" value="Update" class="btn btn-primary">
+                                            </div>
+                                        </div>
+                                    </form>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
                 </table>
             <?php else : ?>
-                <p>No users found.</p>
-            <?php endif; ?>
-        </div>
-
-        <div>
-            <h2>Add User</h2>
-            <form method="post" action="Index.php">
-                <div class="form-group">
-                    <label for="name">Name:</label>
-                    <input type="text" name="name" id="name" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" name="email" id="email" class="form-control" required>
-                </div>
-                <input type="submit" name="add_user" value="Add User" class="btn btn-primary">
-            </form>
-        </div>
+                <p>No usersfound.</p>
+<?php endif; ?>
+</div>
+<div>
+        <h2>Add User</h2>
+        <form method="post" action="Index.php">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" name="name" id="name" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" name="email" id="email" class="form-control" required>
+            </div>
+            <input type="submit" name="add_user" value="Add User" class="btn btn-primary">
+        </form>
     </div>
+</div>
 
-    <!-- Bootstrap JS (Optional) -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- Bootstrap JS (Optional) -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
